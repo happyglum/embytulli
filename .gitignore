@@ -1,0 +1,21 @@
+# Real config with your actual Emby API key / Discord webhook URL -- never commit this.
+# Copy config.example.yaml to config.yaml locally instead.
+config.yaml
+
+# Runtime event log (watch history, usernames) -- local data, not for the repo.
+*.db
+*.db-journal
+
+# Python
+__pycache__/
+*.pyc
+venv/
+env/
+.venv/
+
+# Env files, in case you ever use one instead of config.yaml
+.env
+
+# OS cruft
+.DS_Store
+Thumbs.db

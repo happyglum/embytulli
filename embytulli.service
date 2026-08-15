@@ -1,0 +1,19 @@
+[Unit]
+Description=embytulli - Emby to Discord notifier
+After=network.target
+
+[Service]
+Type=simple
+User=embytulli
+Group=embytulli
+WorkingDirectory=/opt/embytulli
+ExecStart=/opt/embytulli/venv/bin/gunicorn app:app -b 0.0.0.0:8087 --workers 2 --timeout 30
+Restart=always
+RestartSec=3
+# Uncomment to sandbox filesystem access a bit; WorkingDirectory still writable
+# for the SQLite db file.
+# ProtectSystem=strict
+# ReadWritePaths=/opt/embytulli
+
+[Install]
+WantedBy=multi-user.target

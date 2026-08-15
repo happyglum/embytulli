@@ -1,0 +1,67 @@
+# Copy this file to config.yaml and fill in your values.
+# config.yaml is what the app actually reads (see config.py).
+
+emby:
+  # Base URL of your Emby server, reachable from wherever this app runs.
+  # If this app runs in a different LXC than Emby, use Emby's LAN IP.
+  base_url: "http://192.168.1.50:8096"
+  # Emby dashboard -> Advanced -> API Keys -> create a new key.
+  api_key: "YOUR_EMBY_API_KEY"
+
+discord:
+  # Discord channel -> Edit Channel -> Integrations -> Webhooks -> New Webhook -> Copy URL.
+  webhook_url: "https://discord.com/api/webhooks/xxxxxxxx/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  # Overrides the name/avatar Discord shows for this webhook. Leave blank to use the
+  # webhook's own configured name/avatar.
+  username: "Emby"
+  avatar_url: ""
+
+server:
+  # Interface/port this app listens on. 0.0.0.0 = reachable from your LAN (needed
+  # so Emby, in its own LXC, can reach this app).
+  host: "0.0.0.0"
+  port: 8087
+  # Path Emby will POST events to. Keep the leading slash.
+  webhook_path: "/webhook/emby"
+  # Optional shared secret. If set, incoming requests must include it as
+  # ?secret=... in the webhook URL you configure in Emby. Leave blank to disable.
+  shared_secret: ""
+
+notifications:
+  # Which events trigger a Discord message.
+  playback_start: true
+  playback_pause: false
+  playback_unpause: false
+  playback_stop: true
+  library_new: true
+  mark_played: false
+  mark_unplayed: false
+
+  # Emby often fires "library.new" twice in quick succession for the same item
+  # (once when the file is detected, again moments later once metadata/artwork
+  # finishes downloading). This suppresses a repeat notification for the same
+  # item within N minutes. Keep this short -- the webhook is often fired
+  # against the *series*, not the specific episode, so a long window can
+  # wrongly suppress a genuinely new episode added later. Set to 0 to disable.
+  library_new_dedupe_minutes: 15
+
+  # Embed content options.
+  include_summary: true
+  include_progress_bar: true
+  include_poster: true
+  # Adds TMDb/IMDb/TVDB (and TVmaze, if that plugin is installed) links to the
+  # embed, using whatever Item.ProviderIds Emby's metadata scan filled in.
+  include_provider_links: true
+
+  # Usernames/library names to silently ignore (case-insensitive).
+  ignore_users: []
+  ignore_libraries: []
+
+database:
+  # SQLite file used to log every event. Not required for notifications to work,
+  # but keeps a history so a future analytics/dashboard feature has data to use.
+  path: "embytulli.db"
+  enabled: true
+
+logging:
+  level: "INFO"
